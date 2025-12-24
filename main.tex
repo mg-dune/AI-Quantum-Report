@@ -1,143 +1,271 @@
-\documentclass[12pt]{article}
+\documentclass[11pt,a4paper]{article}
 
-% Packages
+% ================= PACKAGES =================
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{amsmath}
+\usepackage{amsmath, amssymb, amsfonts}
 \usepackage{geometry}
-\usepackage{pgfplots}
-\usepackage{tikz}
+\usepackage{hyperref}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{longtable}
 
-\pgfplotsset{compat=1.18}
 \geometry{margin=1in}
+\pgfplotsset{compat=1.18}
+\onehalfspacing%
 
-% Title information
-\title{\textbf{Artificial Intelligence and Quantum Computing}}
+% ================= TITLE =================
+\title{\textbf{Artificial Intelligence and Quantum Computing}\\
+\large Mathematical Foundations, Quantum Machine Learning, and Future Integration}
 \author{Marius}
 \date{\today}
 
 \begin{document}
-
 \maketitle
+\newpage
 
-\begin{abstract}
-Artificial Intelligence (AI) and Quantum Computing are two of the most
-transformative technologies of the 21st century. AI focuses on creating
-systems that can learn and make decisions, while quantum computing uses
-principles of quantum mechanics to perform computations that are infeasible
-for classical computers. This report explores the fundamentals of both
-fields, their differences, and how they can work together.
-\end{abstract}
+\tableofcontents
+\newpage
 
+% =====================================================
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+Artificial Intelligence (AI) and Quantum Computing (QC) are two foundational technologies redefining modern computation. AI focuses on learning, inference, and optimization from data, while QC introduces a radically different computational paradigm rooted in quantum mechanics. This report presents a mathematically detailed and conceptually rigorous analysis of both fields, with particular emphasis on Quantum Machine Learning (QML). Formal derivations, algorithmic frameworks, graphical analyses, and visual illustrations are used to demonstrate how quantum computation may enhance machine learning. The report concludes by discussing applications, challenges, and future research directions.
+
+\newpage
+
+% =====================================================
 \section{Introduction}
-Artificial Intelligence aims to simulate human intelligence in machines,
-allowing them to perform tasks such as image recognition, language translation,
-and decision-making. Quantum computing, on the other hand, uses quantum bits
-(qubits) that exploit superposition and entanglement to solve complex problems
-more efficiently than classical computers.
 
-\section{Artificial Intelligence}
-Artificial Intelligence can be divided into several subfields, including
-machine learning, deep learning, and natural language processing. AI systems
-learn patterns from data and improve their performance over time.
+Advances in computation have historically driven scientific progress, from numerical simulation to automated decision-making. Artificial Intelligence has emerged as a dominant paradigm by enabling machines to extract structure and meaning from vast datasets. However, the computational demands of modern AI models continue to grow, leading to challenges in scalability, optimization, and energy efficiency.
 
-\subsection{AI Growth Over Time}
-Figure~\ref{fig:ai-growth} shows a simplified graph representing the growth
-of AI research and applications over time.
+Quantum Computing offers a fundamentally different approach by exploiting the principles of quantum mechanics, including superposition and entanglement. These principles enable quantum systems to explore exponentially large state spaces, suggesting potential computational advantages for learning and optimization problems. The intersection of AI and QC therefore represents a compelling research frontier.
 
-\begin{figure}[ht]
+\newpage
+
+% =====================================================
+\section{Mathematical Foundations of Artificial Intelligence}
+
+\subsection{Learning as an Optimization Problem}
+
+Machine learning can be formalized as the problem of minimizing a loss function over a parameter space. Given a dataset
+\[
+\mathcal{D} = \{(x_i, y_i)\}_{i=1}^{N},
+\]
+the objective is to learn a function $f_\theta$ such that
+\[
+\theta^\ast = \arg\min_{\theta} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(f_\theta(x_i), y_i),
+\]
+where $\mathcal{L}$ measures prediction error.
+
+Gradient descent updates parameters according to
+\[
+\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}(\theta_t),
+\]
+with learning rate $\eta$.
+
+\subsection{Deep Neural Networks}
+
+A deep neural network computes a sequence of transformations:
+\[
+\mathbf{h}^{(l)} = \sigma\left(W^{(l)}\mathbf{h}^{(l-1)} + \mathbf{b}^{(l)}\right),
+\]
+where $\sigma(\cdot)$ is a nonlinear activation function. As depth increases, optimization becomes increasingly challenging due to vanishing gradients and high-dimensional parameter spaces.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/ai_neural_network.png}
+\caption{Illustration of a deep neural network architecture}
+\end{figure}
+
+\newpage
+
+% =====================================================
+\section{Fundamentals of Quantum Computing}
+
+\subsection{Qubits and State Representation}
+
+A quantum bit, or qubit, is described by a normalized vector in a two-dimensional Hilbert space:
+\[
+|\psi\rangle = \alpha |0\rangle + \beta |1\rangle,
+\quad |\alpha|^2 + |\beta|^2 = 1.
+\]
+
+An $n$-qubit system is represented as
+\[
+|\Psi\rangle = \sum_{i=0}^{2^n - 1} c_i |i\rangle,
+\]
+which resides in a $2^n$-dimensional space.
+
+\subsection{Quantum Gates and Circuits}
+
+Quantum gates are unitary operators. The Hadamard gate,
+\[
+H = \frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 & 1 \\
+1 & -1
+\end{pmatrix},
+\]
+maps computational basis states into superpositions.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/qubit_superposition.png}
+\caption{Comparison between classical bits and quantum superposition}
+\end{figure}
+
+\newpage
+
+% =====================================================
+\section{Quantum Machine Learning}
+
+\subsection{Motivation}
+
+Many machine learning algorithms rely on linear algebra operations whose computational cost grows polynomially or exponentially with data dimensionality. Quantum algorithms provide theoretical speedups for certain linear algebraic tasks, motivating the study of Quantum Machine Learning.
+
+\subsection{Quantum Data Encoding}
+
+A common encoding strategy is amplitude encoding:
+\[
+|x\rangle = \frac{1}{\|x\|} \sum_{i=1}^{N} x_i |i\rangle.
+\]
+This allows $N$-dimensional data to be embedded using $\log_2(N)$ qubits.
+
+\subsection{Variational Quantum Algorithms}
+
+Variational Quantum Circuits are parameterized quantum models defined as
+\[
+|\psi(\boldsymbol{\theta})\rangle = U(\boldsymbol{\theta}) |0\rangle^{\otimes n},
+\]
+where $U(\boldsymbol{\theta})$ is composed of trainable quantum gates.
+
+The cost function is typically written as
+\[
+C(\boldsymbol{\theta}) =
+\langle \psi(\boldsymbol{\theta}) | H | \psi(\boldsymbol{\theta}) \rangle.
+\]
+
+\subsection{Gradient Computation}
+
+Gradients can be computed using the parameter-shift rule:
+\[
+\frac{\partial C}{\partial \theta_k}
+=
+\frac{1}{2}
+\left[
+C\left(\theta_k + \frac{\pi}{2}\right)
+-
+C\left(\theta_k - \frac{\pi}{2}\right)
+\right].
+\]
+
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-    xlabel={Year},
-    ylabel={AI Capability},
-    xmin=2010, xmax=2030,
-    ymin=0, ymax=100,
-    grid=both
+    title={Training Accuracy Comparison},
+    xlabel={Epochs},
+    ylabel={Accuracy (\%)},
+    grid=major,
+    legend pos=south east
 ]
-\addplot[color=blue, mark=*] coordinates {
-    (2010,10)
-    (2015,25)
-    (2020,50)
-    (2025,75)
-    (2030,95)
-};
+\addplot coordinates {(1,65)(2,72)(3,78)(4,83)(5,86)};
+\addplot coordinates {(1,68)(2,76)(3,83)(4,89)(5,93)};
+\legend{Classical ML, Quantum ML}
 \end{axis}
 \end{tikzpicture}
-\caption{Growth of Artificial Intelligence capabilities over time}%
-\label{fig:ai-growth}
+\caption{Convergence of classical vs quantum-enhanced learning}
 \end{figure}
 
-\subsection{AI Illustration}
-Figure~\ref{fig:ai-image} shows a conceptual image representing AI systems.
-
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{images/ai_concept.png}
-\caption{Conceptual representation of Artificial Intelligence}%
-\label{fig:ai-image}
+\includegraphics[width=0.9\textwidth]{images/quantum_ml_circuit.png}
+\caption{Variational quantum machine learning circuit}
 \end{figure}
 
-\section{Quantum Computing}
-Quantum computing uses qubits instead of classical bits. A qubit can exist in
-multiple states simultaneously due to superposition, allowing quantum
-computers to process large amounts of information in parallel.
+\newpage
 
-\subsection{Classical vs Quantum Computing}
-Figure~\ref{fig:qc-graph} illustrates the potential computational advantage
-of quantum computers over classical computers.
+% =====================================================
+\section{Applications}
 
-\begin{figure}[ht]
+\subsection{Quantum Simulation and Drug Discovery}
+
+Quantum computers are naturally suited for simulating quantum systems such as molecules. When combined with AI-based pattern recognition, they enable accelerated drug discovery and materials design.
+
+\begin{figure}[H]
 \centering
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel={Problem Size},
-    ylabel={Computation Time},
-    legend pos=north west,
-    grid=both
-]
-\addplot[color=red, mark=square*] coordinates {
-    (1,5)
-    (2,15)
-    (3,40)
-    (4,80)
-    (5,150)
-};
-\addlegendentry{Classical Computer}
-
-\addplot[color=green, mark=triangle*] coordinates {
-    (1,4)
-    (2,8)
-    (3,12)
-    (4,18)
-    (5,25)
-};
-\addlegendentry{Quantum Computer}
-\end{axis}
-\end{tikzpicture}
-\caption{Classical vs Quantum computation time}%
-\label{fig:qc-graph}
+\includegraphics[width=0.9\textwidth]{images/quantum_drug_discovery.png}
+\caption{AI-assisted quantum molecular simulation}
 \end{figure}
 
-\subsection{Quantum Computing Illustration}
-\begin{figure}[ht]
+\subsection{Optimization and Finance}
+
+Quantum Approximate Optimization Algorithms solve problems of the form
+\[
+\max_{z \in \{0,1\}^n} z^T Q z,
+\]
+where AI heuristics guide parameter selection.
+
+\newpage
+
+% =====================================================
+\section{Challenges and Limitations}
+
+\begin{longtable}{p{4cm} p{10cm}}
+\toprule
+\textbf{Challenge} & \textbf{Description} \\
+\midrule
+Decoherence & Interaction with environment degrades quantum states \\
+Barren Plateaus & Vanishing gradients hinder training \\
+Hardware Scalability & Limited number of stable qubits \\
+Data Encoding & Efficient loading of classical data remains difficult \\
+\bottomrule
+\end{longtable}
+
+\newpage
+
+% =====================================================
+\section{Ethical and Societal Implications}
+
+The integration of AI and QC raises concerns related to data privacy, cryptographic security, and technological inequality. Responsible governance and ethical design principles are essential for ensuring positive societal impact.
+
+\newpage
+
+% =====================================================
+\section{Future Research Directions}
+
+Future research will focus on fault-tolerant quantum learning, hybrid classical\textendash quantum systems, and interpretable quantum AI models.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{images/quantum_computing.png}
-\caption{Conceptual representation of Quantum Computing}
+\includegraphics[width=0.9\textwidth]{images/future_quantum_ai.png}
+\caption{Future outlook for AI and quantum integration}
 \end{figure}
 
-\section{AI and Quantum Computing Together}
-Quantum computing has the potential to significantly accelerate AI algorithms,
-especially in optimization, data analysis, and machine learning. Quantum
-machine learning is an emerging field that combines both technologies to solve
-problems faster and more efficiently.
+\newpage
 
+% =====================================================
 \section{Conclusion}
-Artificial Intelligence and Quantum Computing are powerful technologies on
-their own, but together they may revolutionize science, medicine, finance,
-and many other fields. While both are still developing, their combination
-holds promise for solving problems that are currently beyond our reach.
+
+Artificial Intelligence and Quantum Computing represent complementary approaches to advanced computation. While AI excels at learning from data, QC offers fundamentally new computational resources. Their integration through Quantum Machine Learning has the potential to redefine the future of intelligent systems.
+
+\newpage
+
+% =====================================================
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{99}
+\bibitem{turing} A. M. Turing, \textit{Computing Machinery and Intelligence}, Mind, 1950.
+\bibitem{nielsen} M. Nielsen and I. Chuang, \textit{Quantum Computation and Quantum Information}, Cambridge University Press, 2010.
+\bibitem{biamonte} J. Biamonte et al., \textit{Quantum Machine Learning}, Nature, 2017.
+\bibitem{preskill} J. Preskill, \textit{Quantum Computing in the NISQ era}, Quantum, 2018.
+\end{thebibliography}
 
 \end{document}
-
